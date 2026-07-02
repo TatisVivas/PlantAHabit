@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu enlace mágico — Mi Jardín de Hábitos</title>
+</head>
+<body style="margin:0; padding:0; background-color:#EDEFE4;">
+  <!-- Preheader (texto que se ve en la bandeja de entrada, oculto en el correo) -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
+    Tu enlace mágico para entrar al jardín, sin contraseña. 🌱
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#EDEFE4;">
+    <tr>
+      <td align="center" style="padding:40px 16px 56px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;">
+
+          <!-- Encabezado -->
+          <tr>
+            <td align="center" style="padding:0 8px 24px;">
+              <p style="margin:0 0 6px; font-family:'Courier New', Courier, monospace; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:#3F5936;">
+                Tu jardín personal
+              </p>
+              <h1 style="margin:0; font-family:Georgia, 'Times New Roman', serif; font-weight:600; font-size:30px; line-height:1.1; color:#1F2B1D;">
+                Mi Jardín de Hábitos
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Tarjeta -->
+          <tr>
+            <td style="background-color:#F6F7EF; border:1px solid #DDE0D0; border-radius:20px; padding:36px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" style="padding-bottom:16px; font-size:44px; line-height:1;">
+                    🌱
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-bottom:12px;">
+                    <h2 style="margin:0; font-family:Georgia, 'Times New Roman', serif; font-weight:600; font-size:22px; color:#1F2B1D;">
+                      La puerta del jardín está abierta
+                    </h2>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-bottom:28px;">
+                    <p style="margin:0; font-family:Helvetica, Arial, sans-serif; font-size:15px; line-height:1.6; color:#1F2B1D;">
+                      Entra con este enlace mágico, sin contraseña.
+                      Tus plantas te están esperando.
+                    </p>
+                  </td>
+                </tr>
+
+                <!-- Botón -->
+                <tr>
+                  <td align="center" style="padding-bottom:24px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td align="center" style="background-color:#5C7A4F; border-radius:12px;">
+                          <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email"
+                             target="_blank"
+                             style="display:inline-block; padding:14px 32px; font-family:Helvetica, Arial, sans-serif; font-size:15px; font-weight:bold; color:#FFFFFF; text-decoration:none; border-radius:12px;">
+                            🌿&nbsp; Entrar a mi jardín
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Nota de expiración -->
+                <tr>
+                  <td align="center" style="padding-bottom:24px;">
+                    <p style="margin:0; font-family:'Courier New', Courier, monospace; font-size:11px; color:#5a6355;">
+                      ⏳ este enlace caduca en 1 hora y solo sirve una vez
+                    </p>
+                  </td>
+                </tr>
+
+                <!-- Enlace alternativo -->
+                <tr>
+                  <td align="center" style="border-top:1px solid #DDE0D0; padding-top:20px;">
+                    <p style="margin:0 0 8px; font-family:Helvetica, Arial, sans-serif; font-size:12px; color:#5a6355;">
+                      Si el botón no funciona, copia y pega este enlace en tu navegador:
+                    </p>
+                    <p style="margin:0; font-family:'Courier New', Courier, monospace; font-size:11px; word-break:break-all;">
+                      <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email" style="color:#5E86A1;">{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Pie -->
+          <tr>
+            <td align="center" style="padding:24px 8px 0;">
+              <p style="margin:0; font-family:'Courier New', Courier, monospace; font-size:11px; color:#1F2B1D; opacity:0.55;">
+                Si no pediste este enlace, puedes ignorar este correo.<br>
+                Nadie puede entrar a tu jardín sin él. 🌿
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

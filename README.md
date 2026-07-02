@@ -55,6 +55,16 @@ Construida con **Next.js (App Router) + TypeScript + Tailwind CSS** y **Supabase
    - En **Site URL** pon tu URL de producción (ej. `https://mi-jardin-habitos.vercel.app`).
    - En **Redirect URLs** agrega `https://TU-APP.vercel.app/auth/confirm` y `http://localhost:3000/auth/confirm`.
 
+#### Personalizar los correos (plantillas con la estética del jardín)
+
+El repositorio incluye plantillas HTML para los correos de Supabase en [`supabase/email-templates/`](supabase/email-templates/):
+
+1. En el dashboard: **Authentication → Emails** (en algunas versiones aparece como *Email Templates*).
+2. Pestaña **"Confirm sign up"**: pega el contenido de `confirm-signup.html` en el campo del cuerpo del mensaje (*Message body*, modo `<> Source`), y en **Subject** pon: `🌱 Confirma tu cuenta — Mi Jardín de Hábitos`. Haz clic en **Save**.
+3. Pestaña **"Magic Link"**: pega el contenido de `magic-link.html` y en **Subject** pon: `🌿 Tu enlace mágico — Mi Jardín de Hábitos`. Haz clic en **Save**.
+
+> Las plantillas enlazan a `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email`, que es la ruta que esta app usa para verificar el token (recomendado por Supabase para Next.js con SSR). Por eso es importante que **Site URL** esté bien configurada (punto 4 de arriba).
+
 ### 0.5 Crear el repositorio en GitHub y subir el código
 
 Si estás leyendo esto, probablemente el código ya está en un repositorio. Si no:
