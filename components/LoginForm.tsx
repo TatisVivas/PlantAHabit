@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import PasswordInput from "./PasswordInput";
 import { createClient } from "@/lib/supabase/client";
 
 type Mode = "signin" | "signup";
@@ -12,13 +13,26 @@ export default function LoginForm() {
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<Msg>(null);
 
+  function switchMode(next: Mode) {
+    setMode(next);
+    setMsg(null);
+    setConfirmPassword("");
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setBusy(true);
     setMsg(null);
+
+    if (mode === "signup" && password !== confirmPassword) {
+      setMsg({ kind: "error", text: "Las contraseñas no coinciden." });
+      return;
+    }
+
+    setBusy(true);
     const supabase = createClient();
 
     if (mode === "signin") {
@@ -91,6 +105,31 @@ export default function LoginForm() {
     });
   }
 
+  async function handleForgotPassword() {
+    if (!email) {
+      setMsg({
+        kind: "error",
+        text: "Escribe tu email arriba y vuelve a hacer clic en «¿Olvidaste tu contraseña?».",
+      });
+      return;
+    }
+    setBusy(true);
+    setMsg(null);
+    const supabase = createClient();
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/confirm?next=/reset-password`,
+    });
+    setBusy(false);
+    if (error) {
+      setMsg({ kind: "error", text: error.message });
+      return;
+    }
+    setMsg({
+      kind: "ok",
+      text: "Te enviamos un correo para restablecer tu contraseña. Ábrelo y sigue el enlace.",
+    });
+  }
+
   return (
     <div className="auth-card">
       <div className="auth-tabs" role="tablist" aria-label="Modo de acceso">
@@ -98,10 +137,7 @@ export default function LoginForm() {
           role="tab"
           aria-selected={mode === "signin"}
           className={`auth-tab ${mode === "signin" ? "active" : ""}`}
-          onClick={() => {
-            setMode("signin");
-            setMsg(null);
-          }}
+          onClick={() => switchMode("signin")}
         >
           Entrar
         </button>
@@ -109,10 +145,7 @@ export default function LoginForm() {
           role="tab"
           aria-selected={mode === "signup"}
           className={`auth-tab ${mode === "signup" ? "active" : ""}`}
-          onClick={() => {
-            setMode("signup");
-            setMsg(null);
-          }}
+          onClick={() => switchMode("signup")}
         >
           Crear cuenta
         </button>
@@ -130,19 +163,31 @@ export default function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="field">
-          <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            id="password"
-            autoComplete={mode === "signin" ? "current-password" : "new-password"}
-            required
-            minLength={6}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+
+        <PasswordInput
+          id="password"
+          label="Contraseña"
+          value={password}
+          onChange={setPassword}
+          autoComplete={mode === "signin" ? "current-password" : "new-password"}
+        />
+
+        {mode === "signup" && (
+          <PasswordInput
+            id="confirmPassword"
+            label="Confirmar contraseña"
+            value={confirmPassword}
+            onChange={setConfirmPassword}
+            autoComplete="new-password"
           />
-        </div>
-        <button type="submit" className="btn-primary" disabled={busy} style={{ width: "100%" }}>
+        )}
+
+        <button
+          type="submit"
+          className="btn-primary"
+          disabled={busy}
+          style={{ width: "100%" }}
+        >
           {busy
             ? "Un momento…"
             : mode === "signin"
@@ -155,6 +200,14 @@ export default function LoginForm() {
         <p className={`auth-msg ${msg.kind}`} role="alert">
           {msg.text}
         </p>
+      )}
+
+      {mode === "signin" && (
+        <div className="auth-alt">
+          <button type="button" onClick={handleForgotPassword} disabled={busy}>
+            ¿Olvidaste tu contraseña?
+          </button>
+        </div>
       )}
 
       <div className="auth-alt">
