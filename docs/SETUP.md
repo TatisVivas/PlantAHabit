@@ -34,6 +34,13 @@ Cómo dejar funcionando **Mi Jardín de Hábitos** partiendo de cero: cuenta de 
 3. Cuando tengas la URL de producción (paso 5), ve a **Authentication → URL Configuration**:
    - **Site URL**: tu URL de producción, ej. `https://plant-a-habit.vercel.app`.
    - **Redirect URLs**: agrega `https://TU-APP.vercel.app/auth/confirm` y `http://localhost:3000/auth/confirm`.
+4. Para que **recuperar contraseña** funcione con esta app: en **Authentication → Emails**, pestaña **"Reset Password"**, cambia el enlace del botón (el `href` del `<a>`) por:
+
+   ```
+   {{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/reset-password
+   ```
+
+   Esto apunta el correo a la ruta `/auth/confirm` de la app, que verifica el token y lleva a la página de nueva contraseña. Sin este cambio, el enlace usa el formato por defecto de Supabase (`{{ .ConfirmationURL }}`), que no es compatible con el flujo SSR de esta app.
 
 ## 5. Desplegar en Vercel
 
