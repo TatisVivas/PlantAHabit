@@ -34,13 +34,9 @@ Cómo dejar funcionando **Mi Jardín de Hábitos** partiendo de cero: cuenta de 
 3. Cuando tengas la URL de producción (paso 5), ve a **Authentication → URL Configuration**:
    - **Site URL**: tu URL de producción, ej. `https://plant-a-habit.vercel.app`.
    - **Redirect URLs**: agrega `https://TU-APP.vercel.app/auth/confirm` y `http://localhost:3000/auth/confirm`.
-4. Para que **recuperar contraseña** funcione con esta app: en **Authentication → Emails**, pestaña **"Reset Password"**, cambia el enlace del botón (el `href` del `<a>`) por:
+4. **Correos de recuperación / confirmación**: las plantillas por defecto de Supabase funcionan tal cual — la ruta `/auth/confirm` de la app acepta tanto el formato por defecto (`?code=...`) como el de plantillas personalizadas (`?token_hash=...&type=...`). Solo si configuras un **SMTP propio** (Supabase lo exige para editar plantillas) puedes personalizar el diseño de los correos; en ese caso, apunta los enlaces a `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email` (y para el de recuperación agrega `&next=/reset-password` con `type=recovery`).
 
-   ```
-   {{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/reset-password
-   ```
-
-   Esto apunta el correo a la ruta `/auth/confirm` de la app, que verifica el token y lleva a la página de nueva contraseña. Sin este cambio, el enlace usa el formato por defecto de Supabase (`{{ .ConfirmationURL }}`), que no es compatible con el flujo SSR de esta app.
+   ⚠️ Importante: los enlaces por defecto redirigen a la URL indicada en `redirect_to`, y Supabase **solo permite URLs que estén en la lista Redirect URLs** (punto 3). Si no están, redirige al Site URL y el flujo puede fallar.
 
 ## 5. Desplegar en Vercel
 
